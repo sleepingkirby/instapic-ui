@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import { Input } from 'reactstrap';
+import { Input, Button } from 'reactstrap';
 import './App.css';
 
 
@@ -23,16 +23,30 @@ class SidePane extends Component {
 	}
 
 
+	onBtnTgl(e){
+	console.log(e.target);
+	
+	}
+
 	render() {
 	var sty={minWidth:'20px'};
 	var arrw='>>';
-	var sortISty={backgroundColor:'#282c34', color:'white', minWidth:'20px', maxWidth:'10px', padding:'4px 4px 4px 4px'};
+	var inptDsbl=true;
+	var sortISty={backgroundColor:'#282c34', color:'white', minWidth:'20px', maxWidth:'20px', padding:'4px 4px 4px 4px'};
+	var sortBSty={minWidth:'20px', maxWidth:'20px', padding:'4px 4px 4px 4px', overflow:'hidden'};
+	var sortBVal='O';
+
 		if(this.state.on){
 		sty.minWidth='200px';
 		arrw='<<';
 		sortISty.minWidth='200px';
 		sortISty.maxWidth='300px';
 		sortISty.padding='6px 12px 6px 12px';
+		sortBSty.minWidth='40px';
+		sortBSty.maxWidth='100px';
+		sortBSty.padding='10px 10px 10px 10px';
+		sortBVal='Order';
+		inptDsbl=false;
 		}
 
 		return (
@@ -41,13 +55,10 @@ class SidePane extends Component {
 						{arrw}
 						</div>
 						<div>
-		        <Input type="text" name="sortU" id="sortU" className="inpt" placeholder="Sort by Username" style={sortISty} onInput={ (e)=>this.props.inUpdtSrch('fltrNm', e.target.value) }/>
+		        <Input type="text" name="sortU" id="sortU" className="inpt" placeholder="Sort by Username" style={sortISty} onInput={ (e)=>this.props.inUpdtSrch('fltrNm', e.target.value)} disabled={inptDsbl} />
 						</div>
 						<div>
-						2	
-						</div>
-						<div>
-						3	
+						<Button outline color="secondary" className="btn" onClick={(e)=>{console.log(e.target);}} style={sortBSty}>{sortBVal}</Button>	
 						</div>
 
 					</div>
