@@ -23,9 +23,13 @@ class SidePane extends Component {
 	}
 
 
-	onBtnTgl(e){
-	console.log(e.target);
-	
+	onBtnTgl(val){
+		if(val==''){
+		this.props.inUpdtSrch('sort','datetime');
+		}
+		else{
+		this.props.inUpdtSrch('sort','');
+		}
 	}
 
 	render() {
@@ -36,11 +40,12 @@ class SidePane extends Component {
 	var sortBSty={minWidth:'20px', maxWidth:'20px', padding:'4px 4px 4px 4px', overflow:'hidden'};
 	var sortBVal='O';
 
+		//expanded side pane
 		if(this.state.on){
-		sty.minWidth='200px';
+		sty.minWidth='160px';
 		arrw='<<';
-		sortISty.minWidth='200px';
-		sortISty.maxWidth='300px';
+		sortISty.minWidth='160px';
+		sortISty.maxWidth='160px';
 		sortISty.padding='6px 12px 6px 12px';
 		sortBSty.minWidth='40px';
 		sortBSty.maxWidth='100px';
@@ -48,6 +53,13 @@ class SidePane extends Component {
 		sortBVal='Order';
 		inptDsbl=false;
 		}
+
+
+		if(this.props.inState.sort!=''){
+		sortBSty['backgroundColor']='#6c757d';
+		sortBSty['color']='white';
+		}
+
 
 		return (
 					<div className="sidePane" style={sty}>
@@ -58,7 +70,7 @@ class SidePane extends Component {
 		        <Input type="text" name="sortU" id="sortU" className="inpt" placeholder="Sort by Username" style={sortISty} onInput={ (e)=>this.props.inUpdtSrch('fltrNm', e.target.value)} disabled={inptDsbl} />
 						</div>
 						<div>
-						<Button outline color="secondary" className="btn" onClick={(e)=>{console.log(e.target);}} style={sortBSty}>{sortBVal}</Button>	
+						<Button outline color="secondary" className="btn" onClick={()=>this.onBtnTgl(this.props.inState.sort) } style={sortBSty}>{sortBVal}</Button>	
 						</div>
 
 					</div>

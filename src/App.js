@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import { Button } from 'reactstrap';
 import SidePane from './sidePane';
+import Results from './results';
 import './App.css';
 
 
 class App extends Component {
 
-	constructor(){
-	super();
+	constructor(props){
+	super(props);
 		this.state={
 		signReg: '',
-		sideTog: false,
 			user: {
-			username: '',
-			token: ''
+			username: 'testUser',
+			token: '971f85e284ad6aee68a26006fff73e8ae6034cd2932f232cc3'
 			},
 			search:{
 			fltrNm: '',
@@ -27,7 +27,7 @@ class App extends Component {
 
 	//updates the search states
 	updtSrch( id, val){
-		if(!id || id ===null || id=='' || !val || val===null || val==''){
+		if(!id || id ===null || id=='' ){
 		return null;
 		}
 	var tmp=this.state.search;
@@ -40,6 +40,7 @@ class App extends Component {
 
 
 	render() {
+
 		return (
 			<div className="App">
 				<div className="App-header">
@@ -47,10 +48,8 @@ class App extends Component {
 					<Button outline color="secondary">Log In</Button>
 				</div>
 				<div className="App-body">
-          <SidePane inState={this.state.sideTog} inUpdtSrch={this.updtSrch}/>
-					<div className="mainPane">
-				&nbsp;
-					</div>
+          <SidePane inState={this.state.search} inUpdtSrch={this.updtSrch}/>
+					<Results inState={this.state} />
 				</div>
 			</div>
 		);
