@@ -11,7 +11,8 @@ class Results extends Component {
 		this.state={
 		url: 'http://sleepingkirby.local/',
 		on: false,
-		results: {}
+		results: {},
+		imgs:{}
 		}
 	this.getResults=this.getResults.bind(this);
 	}
@@ -56,7 +57,6 @@ class Results extends Component {
 			this.setState({results: result.results});
 			}, 
 			(error) => { 
-			console.log(error);
 			}
 		);
 	
@@ -75,15 +75,16 @@ class Results extends Component {
 
 		if(this.props.inState.user.username!='' && this.props.inState.user.token!=''){
 		content=[];
-		console.log(this.state.results);
 			if(Object.keys(this.state.results)!==0){
 				let is=Object.keys(this.state.results);
-				console.log(is);
 				is.forEach((item)=>{
 					content.push(
 						<div key={this.state.results[item].id} className="imgBlk" style={{'padding':'0px 0px 0px 0px'}}>
-							<div className='pic'><img src="https://i.ytimg.com/vi/r3dzEiuuWaA/mqdefault.jpg" /></div>
+							<div className='pic'><img src={this.state.url+"posts/"+this.state.results[item].id} /></div>
 							<div className='info'>
+								<div className="user" style={{'textAlign':'right','padding':'2px 10px 2px 0px'}}>
+								{this.state.results[item].userName}
+								</div>
 								<div className="title">
 								{this.state.results[item].title}
 								</div>
