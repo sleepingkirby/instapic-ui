@@ -97,6 +97,7 @@ justify-content: flex-end;
 .inpt{
 width: 100%;
 border-color: #6c757d;
+background-color: transparent;
 transition: all 0.5s ease-in-out;
 }
 
@@ -176,6 +177,17 @@ border-bottom: 1px solid #6c757d;
 color: #61DAFB;
 font-size: smaller;
 flex-grow: 0;
+}
+
+.modBod{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+#modLogin > .modal-content{
+background-color: #282c34;
 }
 
 @keyframes App-logo-spin {
