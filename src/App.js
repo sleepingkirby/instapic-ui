@@ -14,7 +14,7 @@ class App extends Component {
 		signReg: '',
 			user: {
 			username: 'testUser',
-			token: '971f85e284ad6aee68a26006fff73e8ae6034cd2932f232cc3'
+			token: 'bb8101a5ef17359f074aac104d5b9fddeecf3bc0ab15d10bdc'
 			},
 			search:{
 			fltrNm: '',

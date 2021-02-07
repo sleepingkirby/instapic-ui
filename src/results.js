@@ -82,9 +82,17 @@ class Results extends Component {
 				is.forEach((item)=>{
 					content.push(
 						<div key={this.state.results[item].id} className="imgBlk" style={{'padding':'0px 0px 0px 0px'}}>
-							<div className='pic'>img</div>
+							<div className='pic'><img src="https://i.ytimg.com/vi/r3dzEiuuWaA/mqdefault.jpg" /></div>
 							<div className='info'>
-							{this.state.results[item].title}
+								<div className="title">
+								{this.state.results[item].title}
+								</div>
+								<div className="descr">
+								{this.state.results[item].descrip}
+								</div>
+								<div className="tags">
+								{this.state.results[item].tags}
+								</div>
 							</div>
 						</div>
 					);
