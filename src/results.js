@@ -11,46 +11,23 @@ class Results extends Component {
 		this.state={
 		url: 'http://sleepingkirby.local/',
 		on: false,
-		results: {},
-		imgs:{}
+		results: {}
 		}
 	this.getResults=this.getResults.bind(this);
 	}
 
 
-/*
-    let token = this.generateClientToken(privateKey, message);
-
-    let myheaders = {
-      "appID": appID,
-      "authorizationkey": token
-    }
-
-    fetch('http://localhost:8080/api/app/postman', {
-      method: "GET",
-      // body: JSON.stringify(''),
-      headers: myheaders
-    }).then(function(response) {
-      console.log(response.status);     //=> number 100–599
-      console.log(response.statusText); //=> String
-      console.log(response.headers);    //=> Headers
-      console.log(response.url);        //=> String
-
-      return response.text()
-    }, function(error) {
-      console.log(error.message); //=> String
-    })
-*/
-
 	getResults(un, srt){
 	  let head = {
+     	"Content-Type": "application/json",
       "Username": this.props.inState.user.username,
       "Authorization": this.props.inState.user.token
     }
 		fetch(this.state.url+"posts/list", {
 		method: "POST",
 		headers: head,
-		body: {'json':{"sort":"datetime"}}
+		body: JSON.stringify({'json':'{"username":"'+un+'","sort":"'+srt+'"}'}),
+    referrerPolicy: 'no-referrer'
 		}).then(res	=> res.json())
 		.then( 
 			(result) => {
@@ -59,6 +36,7 @@ class Results extends Component {
 				}
 			}, 
 			(error) => { 
+			console.log(error);
 			}
 		);
 	
@@ -66,18 +44,39 @@ class Results extends Component {
 
   componentDidMount() {
 		if(this.props.inState.user.username!='' && this.props.inState.user.token!=''){
-		this.getResults();	
+		this.props.inKeepAlive();
+		this.getResults(this.props.inState.search.fltrNm, this.props.inState.search.sort);
 		}
 	}
+
+	componentDidUpdate(pprops, pstate){
+		if(this.props.inState.user.username!='' && this.props.inState.user.token!=''){
+			if(this.props.inState.user.username !== pprops.inState.user.username){
+				if(this.props.inState.user.username!='' && this.props.inState.user.token!=''){
+				this.getResults(this.props.inState.search.fltrNm, this.props.inState.search.sort);
+				}
+				else{
+					this.setState({
+					results:{}
+					});
+				}
+				return null;
+			}
+			if(this.props.inState.searchBool !== pprops.inState.searchBool){
+				this.getResults(this.props.inState.search.fltrNm, this.props.inState.search.sort);
+				return null;
+			}
+		}
+	}
+
 
 	render() {
 	var json="";
 	var content=[];
 	content.push(<div key='1'>Please log in</div>);
-
 		if(this.props.inState.user.username!='' && this.props.inState.user.token!=''){
 		content=[];
-			if(Object.keys(this.state.results)!==0){
+			if(this.state.hasOwnProperty('results') && typeof this.state.results === 'object' && this.state.results !== null && Object.keys(this.state.results)!==0){
 				let is=Object.keys(this.state.results);
 				is.forEach((item)=>{
 					content.push(

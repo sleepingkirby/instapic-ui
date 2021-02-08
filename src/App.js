@@ -22,11 +22,14 @@ class App extends Component {
 		search:{
 			fltrNm: '',
 			sort: ''
-			}
+			},
+		searchBool: false
 		}
 
 	this.login=this.login.bind(this);
+	this.loggedIn=this.loggedIn.bind(this);
 	this.logout=this.logout.bind(this);
+	this.register=this.register.bind(this);
 	this.setSignModal=this.setSignModal.bind(this);
 	this.setRegModal=this.setRegModal.bind(this);
 	this.updtSrch=this.updtSrch.bind(this);
@@ -62,7 +65,8 @@ class App extends Component {
 	var tmp=this.state.search;
 	tmp[id]=val;
 		this.setState({
-			search:tmp
+			search:tmp,
+			searchBool: !this.state.searchBool
 		});
 	}
 
@@ -100,9 +104,6 @@ class App extends Component {
 					}
 				},
 				(error) => {
-				}
-			).catch((err)=> {
-				throw new Error("Unable to send ajax call.");
 				}
 			);
 		}
@@ -147,6 +148,38 @@ class App extends Component {
 	}
 
 
+	loggedIn(){
+		if(this.state.user.username!=""&&this.state.user.username!=null&&this.state.user.token!=""&&this.state.user.token!=null){
+			let head = {
+				"Username": this.state.user.username,
+				"Authorization": this.state.user.token
+			}
+			fetch(this.state.url+"users/"+this.state.user.username+"/loggedIn", {
+			headers: head,
+			method: "PATCH"
+			}).then(res => res.json())
+			.then(
+				(result) => {
+					if(!result.status){
+						this.setState({
+							user:{
+							username:'',
+							token:''
+							},
+							statusMsg: result.msg,
+						});
+					}
+				},
+				(error) => {
+				console.log(error.msg);
+				}
+			).catch((err)=> {
+				throw new Error("Unable to send ajax call.");
+				}
+			);
+		}
+	}
+
 
 	register(){
     fetch(this.state.url+"posts/list", {
@@ -161,6 +194,15 @@ class App extends Component {
       }
     );
 	}
+
+
+  componentDidMount() {
+    if(this.state.user.username!='' && this.state.user.token!=''){
+		console.log(this.state);
+    this.loggedIn();
+    }
+  }
+
 
 	render() {
 		var headContIn=(
@@ -193,7 +235,7 @@ class App extends Component {
 					{headCont}
 				<div className="App-body">
           <SidePane inState={this.state.search} inUpdtSrch={this.updtSrch}/>
-					<Results inState={this.state} />
+					<Results inState={this.state} inKeepAlive={this.loggedIn}/>
 
 					<div>
 						<Modal id="modLogin" isOpen={this.state.signIn} toggle={this.setSignModal} style={{'width':'300px'}}>
