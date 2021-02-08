@@ -13,6 +13,7 @@ class App extends Component {
 		this.state={
 		signIn: false,
 		reg: false,
+		upld: false,
     url: 'http://sleepingkirby.local/',
 		statusMsg: '',
 		user: {
@@ -32,6 +33,7 @@ class App extends Component {
 	this.register=this.register.bind(this);
 	this.setSignModal=this.setSignModal.bind(this);
 	this.setRegModal=this.setRegModal.bind(this);
+	this.setUpldModal=this.setUpldModal.bind(this);
 	this.updtSrch=this.updtSrch.bind(this);
 	}
 
@@ -57,6 +59,14 @@ class App extends Component {
 		statusMsg:''
 		});
 	}
+
+	setUpldModal(){
+		this.setState({
+		upld: !this.state.upld,
+		statusMsg:''
+		});
+	}
+
 
 
 	//updates the search states
@@ -229,6 +239,7 @@ class App extends Component {
 	render() {
 		var headContIn=(
 					<div className="App-header">
+						<div className="label" onClick={this.setUpldModal}>Upload</div>
 						<Button outline color="secondary" onClick={this.logout}>Logout</Button>
 					</div>
 		);
@@ -280,10 +291,24 @@ class App extends Component {
 								<div className="modRow" style={{'marginBottom':'20px'}}><div>Username:</div><Input type="text" name="regUser" className="inpt" placeholder="Username" style={{'backgroundColor':'transparent', 'width':'250px'}}/></div>
 								<div className="modRow"><div>Password:</div><Input type="password" name="regPwd" className="inpt" placeholder="Password" style={{'backgroundColor':'transparent', 'width':'250px' }} /></div>
 								<div className="modRow" style={{'marginBottom':'16px'}}><div>Repeat:</div><Input type="password" name="regPwd2" className="inpt" placeholder="Repeat Password" style={{'backgroundColor':'transparent', 'width':'250px' }} /></div>
-								<div className="modRow"><div>Time Out:</div><Input type="text" name="regTO" className="inpt" placeholder="##" maxlength="2" style={{'backgroundColor':'transparent', 'width':'50px' }} /></div>
+								<div className="modRow"><div>Time Out:</div><Input type="text" name="regTO" className="inpt" placeholder="##" maxLength="2" style={{'backgroundColor':'transparent', 'width':'50px' }} /></div>
 							</ModalBody>
 							<ModalFooter>
 								<Button color="secondary" onClick={this.setRegModal}>Cancel</Button>
+								<Button color="primary" onClick={this.register}>Register</Button>{' '}
+							</ModalFooter>
+						</Modal>
+					</div>
+
+					<div>
+						<Modal id="modUpld" isOpen={this.state.upld} toggle={this.setUpldModal}>
+							<ModalBody className="modUpld">
+								{statusMsg}
+								<div className="modRow" style={{'marginBottom':'20px'}}><div>Title:</div><Input type="text" name="upldTtl" className="inpt" placeholder="title" style={{'backgroundColor':'transparent', 'width':'250px'}}/></div>
+								<div className="modRow"><div>Description:</div><Input type="textarea" name="regPwd" className="inpt" placeholder="Password" style={{'backgroundColor':'transparent', 'width':'250px' }} /></div>
+							</ModalBody>
+							<ModalFooter>
+								<Button color="secondary" onClick={this.setUpldModal}>Cancel</Button>
 								<Button color="primary" onClick={this.register}>Regiser</Button>{' '}
 							</ModalFooter>
 						</Modal>
