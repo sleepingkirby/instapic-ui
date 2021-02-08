@@ -31,9 +31,7 @@ class Results extends Component {
 		}).then(res	=> res.json())
 		.then( 
 			(result) => {
-				if(result.hasOwnProperty){
 				this.setState({results: result.results});
-				}
 			}, 
 			(error) => { 
 			console.log(error);

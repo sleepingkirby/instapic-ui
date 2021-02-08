@@ -46,13 +46,15 @@ class App extends Component {
 	---------------------------------------------------------------------*/
 	setSignModal(){
 		this.setState({
-		signIn: !this.state.signIn
+		signIn: !this.state.signIn,
+		statusMsg:''
 		});
 	}
 
 	setRegModal(){
 		this.setState({
-		reg: !this.state.reg
+		reg: !this.state.reg,
+		statusMsg:''
 		});
 	}
 
@@ -181,16 +183,36 @@ class App extends Component {
 	}
 
 
-	register(){
-    fetch(this.state.url+"posts/list", {
+	register(un, pwd, st, to){
+	var un=document.getElementsByName("regUser")[0].value;
+	var pwd=document.getElementsByName("regPwd")[0].value;
+	var pwd2=document.getElementsByName("regPwd2")[0].value;
+	var to=document.getElementsByName("regTO")[0].value;
+	
+		if(pwd!=pwd2){
+			this.setState({
+			statusMsg:'Password doesn\'t match'
+			});
+		return null;
+		}
+
+    let head = {
+      "Content-Type": "application/json"
+    }
+    fetch(this.state.url+"users/register", {
     method: "POST",
-    body: {'json':{"sort":"datetime"}}
+    headers: head,
+    body: JSON.stringify({'json':'{"username":"'+un+'", "password":"'+pwd+'","status":"active", "timeout":"'+to+'"}'}),
+    referrerPolicy: 'no-referrer'
     }).then(res => res.json())
-    .then(
+    .then( 
       (result) => {
-      this.setState({results: result.results});
-      },
-      (error) => {
+				this.setState({
+				statusMsg:result.msg				
+				});
+      }, 
+      (error) => { 
+      console.log(error);
       }
     );
 	}
@@ -255,14 +277,14 @@ class App extends Component {
 						<Modal id="modReg" isOpen={this.state.reg} toggle={this.setRegModal}>
 							<ModalBody className="modReg">
 								{statusMsg}
-								<div className="modRow" style={{'marginBottom':'20px'}}><div>Username:</div><Input type="text" name="sortU" className="inpt" placeholder="Username" style={{'backgroundColor':'transparent', 'width':'250px'}}/></div>
-								<div className="modRow"><div>Password:</div><Input type="password" name="sortU" className="inpt" placeholder="Password" style={{'backgroundColor':'transparent', 'width':'250px' }} /></div>
-								<div className="modRow" style={{'marginBottom':'16px'}}><div>Repeat:</div><Input type="password" name="sortU" className="inpt" placeholder="Password" style={{'backgroundColor':'transparent', 'width':'250px' }} /></div>
-								<div className="modRow"><div>Time Out:</div><Input type="text" name="sortU" className="inpt" placeholder="##" maxlength="2" style={{'backgroundColor':'transparent', 'width':'50px' }} /></div>
+								<div className="modRow" style={{'marginBottom':'20px'}}><div>Username:</div><Input type="text" name="regUser" className="inpt" placeholder="Username" style={{'backgroundColor':'transparent', 'width':'250px'}}/></div>
+								<div className="modRow"><div>Password:</div><Input type="password" name="regPwd" className="inpt" placeholder="Password" style={{'backgroundColor':'transparent', 'width':'250px' }} /></div>
+								<div className="modRow" style={{'marginBottom':'16px'}}><div>Repeat:</div><Input type="password" name="regPwd2" className="inpt" placeholder="Repeat Password" style={{'backgroundColor':'transparent', 'width':'250px' }} /></div>
+								<div className="modRow"><div>Time Out:</div><Input type="text" name="regTO" className="inpt" placeholder="##" maxlength="2" style={{'backgroundColor':'transparent', 'width':'50px' }} /></div>
 							</ModalBody>
 							<ModalFooter>
 								<Button color="secondary" onClick={this.setRegModal}>Cancel</Button>
-								<Button color="primary" onClick={this.setRegModal}>Regiser</Button>{' '}
+								<Button color="primary" onClick={this.register}>Regiser</Button>{' '}
 							</ModalFooter>
 						</Modal>
 					</div>
