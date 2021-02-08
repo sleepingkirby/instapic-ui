@@ -54,7 +54,9 @@ class Results extends Component {
 		}).then(res	=> res.json())
 		.then( 
 			(result) => {
-			this.setState({results: result.results});
+				if(result.hasOwnProperty){
+				this.setState({results: result.results});
+				}
 			}, 
 			(error) => { 
 			}
@@ -100,7 +102,7 @@ class Results extends Component {
 				});
 			}
 			else{
-			content.push(<div key='1'>no results</div>);
+			content.push(<div key='1'>No Results</div>);
 			}
 		}
 
