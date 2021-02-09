@@ -31,6 +31,7 @@ class App extends Component {
 	this.loggedIn=this.loggedIn.bind(this);
 	this.logout=this.logout.bind(this);
 	this.register=this.register.bind(this);
+	this.upload=this.upload.bind(this);
 	this.setSignModal=this.setSignModal.bind(this);
 	this.setRegModal=this.setRegModal.bind(this);
 	this.setUpldModal=this.setUpldModal.bind(this);
@@ -84,10 +85,11 @@ class App extends Component {
 
 	login(){
 	//curl -F 'json={"password":"password"}' -X POST http://domain/users/username/login
-	//I know the standard way is to use refs but I can either a) create refs which allocates memory in the JS event
+	//I know the standard way is to use refs but I can either a) create refs which allocates memory in the JS vm
 	// b) keep track of another global state while adding an event listener to the form.
 	// or c) just get the values when I need it.
-	// so c as reactjs apps are bloated enough as it is
+	// so c as reactjs apps are bloated enough as it is and given the amount of logins
+	// per user is low, this is the better answer.
 	var nm=document.getElementsByName("loginNm")[0].value;
 	var pw=document.getElementsByName("loginPw")[0].value;
 		if(nm!=''&&nm!==null&&pw!==''&&pw!==null){
@@ -193,7 +195,7 @@ class App extends Component {
 	}
 
 
-	register(un, pwd, st, to){
+	register(){
 	var un=document.getElementsByName("regUser")[0].value;
 	var pwd=document.getElementsByName("regPwd")[0].value;
 	var pwd2=document.getElementsByName("regPwd2")[0].value;
@@ -227,6 +229,53 @@ class App extends Component {
     );
 	}
 
+
+	upload(){
+//curl -i -H "Content-Type: multipart/form-data; boundary=CUSTOM" -d $'--CUSTOM\r\nContent-Type: multipart/octet-stream\r\nContent-Disposition: file; filename="test"\r\n\r\nHello World!\n--CUSTOM--' "http://localhost:5001/api/v0/add"
+
+	var formData = new FormData();
+	var ttl = document.getElementsByName('upldTtl');
+	var dscr = document.getElementsByName('upldDscr');
+	var fl = document.getElementsByName('upldFl');
+	var tag = document.getElementsByName('upldTags');
+	
+    let head = {
+      "Username": this.state.user.username,
+      "Authorization": this.state.user.token
+    }
+
+	formData.append('json','{"title":"'+ttl[0].value+'","descr":"'+dscr[0].value+'","tags":"'+tag[0].value+'"}');
+	formData.append('file', fl[0].files[0]);
+
+			fetch(this.state.url+"posts/post", {
+			method: 'POST',
+			headers: head,
+			body: formData
+		}).then(
+			response => response.json()
+		).then(
+			(result) => {
+				if(result.status){
+				ttl[0].value=null;
+				dscr[0].value=null;
+				fl[0].value=null;
+				tag[0].value=null;	
+					this.setState({
+			    searchBool: !this.state.searchBool,
+					});
+				}
+				this.setState({
+				statusMsg: result.msg
+				});
+			}
+		).catch(
+			(error) => {
+				this.setState({
+				statusMsg: error
+				});
+				}
+		);
+	}
 
   componentDidMount() {
     if(this.state.user.username!='' && this.state.user.token!=''){
@@ -305,11 +354,13 @@ class App extends Component {
 							<ModalBody className="modUpld">
 								{statusMsg}
 								<div className="modRow" style={{'marginBottom':'20px'}}><div>Title:</div><Input type="text" name="upldTtl" className="inpt" placeholder="title" style={{'backgroundColor':'transparent', 'width':'250px'}}/></div>
-								<div className="modRow"><div>Description:</div><Input type="textarea" name="regPwd" className="inpt" placeholder="Password" style={{'backgroundColor':'transparent', 'width':'250px' }} /></div>
+								<div className="modRow"><div>Description:</div><Input type="textarea" name="upldDscr" className="inpt" placeholder="Description" style={{'backgroundColor':'transparent', 'width':'250px' }} /></div>
+								<div className="modRow" style={{'marginBottom':'20px'}}><div>Tags:</div><Input type="text" name="upldTags" className="inpt" placeholder="tag1,tag2" style={{'backgroundColor':'transparent', 'width':'250px' }} /></div>
+								<div className="modRow"><div>Picture: </div><div style={{'display':'flex', 'justifyContent':'flex-end'}}><Input type="file" name="upldFl" style={{'display':'flex'}}/></div></div>
 							</ModalBody>
 							<ModalFooter>
 								<Button color="secondary" onClick={this.setUpldModal}>Cancel</Button>
-								<Button color="primary" onClick={this.register}>Regiser</Button>{' '}
+								<Button color="primary" onClick={this.upload}>Upload</Button>{' '}
 							</ModalFooter>
 						</Modal>
 					</div>
