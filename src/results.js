@@ -71,7 +71,7 @@ class Results extends Component {
 	render() {
 	var json="";
 	var content=[];
-	content.push(<div key='1'>Please log in</div>);
+	content.push(<div key='1' className="pLogIn" >Please log in</div>);
 		if(this.props.inState.user.username!='' && this.props.inState.user.token!=''){
 		content=[];
 			if(this.state.hasOwnProperty('results') && typeof this.state.results === 'object' && this.state.results !== null && Object.keys(this.state.results)!==0){
@@ -79,7 +79,7 @@ class Results extends Component {
 				is.forEach((item)=>{
 					content.push(
 						<div key={this.state.results[item].id} className="imgBlk" style={{'padding':'0px 0px 0px 0px'}}>
-							<div className='pic'><img src={this.state.url+"posts/"+this.state.results[item].id} /></div>
+							<div className='pic'><a target="_blank" href={this.state.url+"posts/"+this.state.results[item].id}><img src={this.state.url+"posts/"+this.state.results[item].id} /></a></div>
 							<div className='info'>
 								<div className="user" style={{'textAlign':'right','padding':'2px 10px 2px 0px'}}>
 								{this.state.results[item].userName}
@@ -99,7 +99,7 @@ class Results extends Component {
 				});
 			}
 			else{
-			content.push(<div key='1'>No Results</div>);
+			content.push(<div key='1' className="pLogIn">No Results</div>);
 			}
 		}
 
