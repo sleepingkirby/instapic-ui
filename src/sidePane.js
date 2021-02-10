@@ -70,7 +70,7 @@ class SidePane extends Component {
 		        <Input type="text" name="sortU" id="sortU" className="inpt" placeholder="Sort by Username" style={sortISty} onInput={ (e)=>this.props.inUpdtSrch('fltrNm', e.target.value)} disabled={inptDsbl} />
 						</div>
 						<div>
-						<Button outline color="secondary" className="btn" onClick={()=>this.onBtnTgl(this.props.inState.sort) } style={sortBSty}>{sortBVal}</Button>	
+						<Button name="sortD" outline color="secondary" className="btn" onClick={()=>this.onBtnTgl(this.props.inState.sort) } style={sortBSty}>{sortBVal}</Button>	
 						</div>
 
 					</div>

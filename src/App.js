@@ -288,14 +288,14 @@ class App extends Component {
 	render() {
 		var headContIn=(
 					<div className="App-header">
-						<div className="label" onClick={this.setUpldModal}>Upload</div>
-						<Button outline color="secondary" onClick={this.logout}>Logout</Button>
+						<div name="upload" className="label" onClick={this.setUpldModal}>Upload</div>
+						<Button name="logout" outline color="secondary" onClick={this.logout}>Logout</Button>
 					</div>
 		);
 		var headContOut=(
 					<div className="App-header">
-						<div className="label" onClick={this.setRegModal}>Register</div>
-						<Button outline color="secondary" onClick={this.setSignModal}>Log In</Button>
+						<div name="register" className="label" onClick={this.setRegModal}>Register</div>
+						<Button name="login" outline color="secondary" onClick={this.setSignModal}>Log In</Button>
 					</div>
 		);
 		var headCont=headContOut;
@@ -327,8 +327,8 @@ class App extends Component {
 								<Input type="password" name="loginPw" className="inpt" placeholder="Password" style={{'backgroundColor':'transparent', 'width':'250px' }} />
 							</ModalBody>
 							<ModalFooter>
-								<Button color="secondary" onClick={this.setSignModal}>Cancel</Button>
-								<Button color="primary" onClick={this.login}>Login</Button>{' '}
+								<Button name="modLoginCncl" color="secondary" onClick={this.setSignModal}>Cancel</Button>
+								<Button name="modLoginLgn" color="primary" onClick={this.login}>Login</Button>{' '}
 							</ModalFooter>
 						</Modal>
 					</div>
@@ -343,8 +343,8 @@ class App extends Component {
 								<div className="modRow"><div>Time Out:</div><Input type="text" name="regTO" className="inpt" placeholder="##" maxLength="2" style={{'backgroundColor':'transparent', 'width':'50px' }} /></div>
 							</ModalBody>
 							<ModalFooter>
-								<Button color="secondary" onClick={this.setRegModal}>Cancel</Button>
-								<Button color="primary" onClick={this.register}>Register</Button>{' '}
+								<Button name="modRegCncl" color="secondary" onClick={this.setRegModal}>Cancel</Button>
+								<Button name="modRegReg" color="primary" onClick={this.register}>Register</Button>{' '}
 							</ModalFooter>
 						</Modal>
 					</div>
@@ -359,8 +359,8 @@ class App extends Component {
 								<div className="modRow"><div>Picture: </div><div style={{'display':'flex', 'justifyContent':'flex-end'}}><Input type="file" name="upldFl" style={{'display':'flex'}}/></div></div>
 							</ModalBody>
 							<ModalFooter>
-								<Button color="secondary" onClick={this.setUpldModal}>Cancel</Button>
-								<Button color="primary" onClick={this.upload}>Upload</Button>{' '}
+								<Button name="modUpldCncl" color="secondary" onClick={this.setUpldModal}>Cancel</Button>
+								<Button name="modUpldUpld" color="primary" onClick={this.upload}>Upload</Button>{' '}
 							</ModalFooter>
 						</Modal>
 					</div>

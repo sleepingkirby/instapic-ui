@@ -74,7 +74,7 @@ class Results extends Component {
 	render() {
 	var json="";
 	var content=[];
-	content.push(<div key='1' className="pLogIn" >Please log in</div>);
+	content.push(<div key='1' name="resDflt" className="pLogIn" >Please log in</div>);
 		if(this.props.inState.user.username!='' && this.props.inState.user.token!=''){
 		content=[];
 			if(this.state.hasOwnProperty('results') && typeof this.state.results === 'object' && this.state.results !== null && Object.keys(this.state.results)!==0){
@@ -102,7 +102,7 @@ class Results extends Component {
 				});
 			}
 			else{
-			content.push(<div key='1' className="pLogIn">No Results</div>);
+			content.push(<div key='1' name="resDfltY" className="pLogIn">No Results</div>);
 			}
 		}
 
